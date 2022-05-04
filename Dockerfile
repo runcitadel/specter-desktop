@@ -9,14 +9,12 @@
 ARG USER=specter
 ARG DIR=/data/
 
-FROM python:3.9-slim-bullseye AS builder
+FROM python:3.9-bullseye AS builder
 
 ARG VERSION
 ARG REPO
 
-RUN apt update && apt install -y git build-essential libusb-1.0-0-dev libudev-dev libffi-dev libssl-dev rustc cargo
-
-WORKDIR /
+RUN apt update && apt install -y git gcc g++ libc6-dev libusb-1.0-0-dev libudev-dev libffi-dev libssl-dev rustc cargo
 
 WORKDIR /specter-desktop
 
@@ -32,7 +30,7 @@ FROM python:3.9-slim-bullseye as final
 ARG USER
 ARG DIR
 
-RUN apt update && apt install -y libusb-1.0-0-dev libudev-dev
+RUN apt update && apt install -y libusb-1.0-0 libudev1
 
 # NOTE: Default GID == UID == 1000
 RUN adduser --disabled-password \
